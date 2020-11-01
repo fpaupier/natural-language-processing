@@ -1,6 +1,7 @@
 import nltk
 import pickle
 import re
+import csv
 import numpy as np
 
 nltk.download('stopwords')
@@ -42,32 +43,33 @@ def load_embeddings(embeddings_path):
     # Hint: you have already implemented a similar routine in the 3rd assignment.
     # Note that here you also need to know the dimension of the loaded embeddings.
     # When you load the embeddings, use numpy.float32 type as dtype
-
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
-
-    # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+    embeddings = dict()
+    with open(embeddings_path, newline='') as f:
+        reader = csv.reader(f, delimiter='\t')
+        for row in reader:
+            embeddings[row[0]] = np.array(row[1:], dtype=np.float32)
+        dim = len(row[1:])
+    return embeddings, dim
 
 
 def question_to_vec(question, embeddings, dim):
-    """Transforms a string to an embedding by averaging word embeddings."""
+    """Transforms a string to an embedding by averaging word embeddings.
+        question: a string
+        embeddings: dict where the key is a word and a value is its' embedding
+        dim: size of the representation
 
-    # Hint: you have already implemented exactly this function in the 3rd assignment.
-
-    ########################
-    #### YOUR CODE HERE ####
-    ########################
-
-    # remove this when you're done
-    raise NotImplementedError(
-        "Open utils.py and fill with your code. In case of Google Colab, download"
-        "(https://github.com/hse-aml/natural-language-processing/blob/master/project/utils.py), "
-        "edit locally and upload using '> arrow on the left edge' -> Files -> UPLOAD")
+        result: vector representation for the question
+    """
+    res = np.zeros(dim)
+    n = 0
+    for word in question.split():
+      if word not in embeddings:
+        continue
+      res = np.add(res, embeddings[word])
+      n += 1
+    if n>0:
+      res = np.divide(res, n)
+    return res
 
 
 def unpickle_file(filename):
