@@ -1,6 +1,7 @@
 tqdm
 backports.weakref==1.0.post1
-ChatterBot==0.7.6
+ChatterBot==1.0.8
+chatterbot-corpus==1.0.1
 enum34==1.1.6
 funcsigs==1.0.2
 gensim==3.8.0
