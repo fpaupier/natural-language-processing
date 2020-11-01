@@ -6,7 +6,7 @@ import requests
 from common import tqdm_utils
 
 
-REPOSITORY_PATH = "https://github.com/hse-aml/natural-language-processing"
+REPOSITORY_PATH = "https://github.com/fpaupier/natural-language-processing"
 
 
 def download_file(url, file_path):
